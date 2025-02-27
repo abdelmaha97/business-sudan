@@ -14,18 +14,18 @@ const Tourism = () => {
           <TourismCard
             title="أهرامات مروي"
             description="من أهم المعالم الأثرية، وهي أهرامات مملكة كوش التي تفوقت على الأهرامات المصرية في العدد."
-            image="https://images.unsplash.com/photo-1482881497185-d4a9ddbe4151?auto=format&fit=crop&w=800&h=600"
+            image='/img/30.png'
           />
           <TourismCard
             title="جبل البركل"
             description="موقع أثري مقدس للنوبة يحتوي على معابد ونقوش قديمة."
-            image="https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=800&h=600"
+            image='/img/24.png'
           />
           <TourismCard
             title="مدينة كرمة"
             description="تضم 'الديفوفة'، وهي بقايا معابد ضخمة من الحضارة النوبية."
-            image="https://images.unsplash.com/photo-1469041797191-50ace28483c3?auto=format&fit=crop&w=800&h=600"
-          />
+            image='/img/25.png'
+             />
         </div>
       ),
     },
@@ -37,17 +37,17 @@ const Tourism = () => {
           <TourismCard
             title="جبل مرة"
             description="منطقة جبلية خلابة ذات مناخ معتدل، بها شلالات قلول وشلال سوني وبحيرة دريبات."
-            image="https://images.unsplash.com/photo-1466721591366-2d5fba72006d?auto=format&fit=crop&w=800&h=600"
+            image='/img/31.png'
           />
           <TourismCard
-            title="محمية الردوم"
+            title="محمية الدندر"
             description="واحدة من أكبر المحميات في إفريقيا، تضم أنواعاً نادرة من الحيوانات البرية."
-            image="https://images.unsplash.com/photo-1438565434616-3ef039228b15?auto=format&fit=crop&w=800&h=600"
+            image='/img/32.png'
           />
           <TourismCard
             title="جزيرة سنقنيب"
             description="محمية بحرية تحتوي على واحدة من أجمل الشعاب المرجانية في العالم."
-            image="https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=800&h=600"
+            image='/img/40.png'
           />
         </div>
       ),
@@ -58,19 +58,19 @@ const Tourism = () => {
       content: (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           <TourismCard
-            title="أم درمان"
-            description="تضم سوق أم درمان الكبير وبيت الخليفة الذي يوثق تاريخ المهدية."
-            image="https://images.unsplash.com/photo-1469041797191-50ace28483c3?auto=format&fit=crop&w=800&h=600"
+            title=" بورتسودان"
+            description="بورتسودان، عاصمة ولاية البحر الأحمر في السودان، هي الميناء الرئيسي للبلاد على البحر الأحمر، وتتميز بعدة معالم طبيعية وسياحية وتجارية."
+            image='/img/5.jpeg'
           />
           <TourismCard
             title="الفاشر"
             description="مركز ثقافي هام يعكس تراث سلطنة دارفور."
-            image="https://images.unsplash.com/photo-1469041797191-50ace28483c3?auto=format&fit=crop&w=800&h=600"
+            image='/img/3.jpeg'
           />
           <TourismCard
             title="الخرطوم"
             description="تحتوي على متحف السودان القومي ومتحف التاريخ الطبيعي ومسجد النيلين."
-            image="https://images.unsplash.com/photo-1469041797191-50ace28483c3?auto=format&fit=crop&w=800&h=600"
+            image='/img/1.jpeg'
           />
         </div>
       ),
@@ -151,29 +151,29 @@ const Tourism = () => {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               <div className="aspect-square overflow-hidden rounded-lg">
                 <img
-                  src="https://images.unsplash.com/photo-1482881497185-d4a9ddbe4151?auto=format&fit=crop&w=800&h=800"
+                  src="/img/1.jpeg"
                   alt="المناظر الطبيعية في السودان"
                   className="w-full h-full object-cover transition-transform hover:scale-110"
                 />
               </div>
               <div className="aspect-square overflow-hidden rounded-lg">
                 <img
-                  src="https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=800&h=800"
-                  alt="الحياة البرية في السودان"
+                  src="/img/2.jpeg"
+                   alt="الحياة البرية في السودان"
                   className="w-full h-full object-cover transition-transform hover:scale-110"
                 />
               </div>
               <div className="aspect-square overflow-hidden rounded-lg">
                 <img
-                  src="https://images.unsplash.com/photo-1469041797191-50ace28483c3?auto=format&fit=crop&w=800&h=800"
-                  alt="التراث الثقافي في السودان"
+                   src="/img/3.jpeg"
+                   alt="التراث الثقافي في السودان"
                   className="w-full h-full object-cover transition-transform hover:scale-110"
                 />
               </div>
               <div className="aspect-square overflow-hidden rounded-lg">
                 <img
-                  src="https://images.unsplash.com/photo-1466721591366-2d5fba72006d?auto=format&fit=crop&w=800&h=800"
-                  alt="الحياة البرية في السودان"
+                  src="/img/4.jpeg"
+                    alt="الحياة البرية في السودان"
                   className="w-full h-full object-cover transition-transform hover:scale-110"
                 />
               </div>
@@ -183,26 +183,28 @@ const Tourism = () => {
 
         {/* الفيديوهات */}
         <section className="py-16">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-12">استكشف السودان</h2>
-            <div className="grid md:grid-cols-2 gap-8">
-              <iframe
-                className="w-full aspect-video rounded-lg shadow-lg"
-                src="https://www.youtube.com/embed/your-video-id-1"
-                title="اكتشف السودان"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
-              <iframe
-                className="w-full aspect-video rounded-lg shadow-lg"
-                src="https://www.youtube.com/embed/your-video-id-2"
-                title="جولة سياحية في السودان"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
-            </div>
-          </div>
-        </section>
+  <div className="container mx-auto px-4">
+    <h2 className="text-3xl font-bold text-center mb-12">استكشف السودان</h2>
+    <div className="grid md:grid-cols-2 gap-8">
+      <video
+        className="w-full aspect-video rounded-lg shadow-lg"
+        src="/videos/6.mp4"
+        title="اكتشف السودان"
+        muted
+        controls
+        preload="none"
+      ></video>
+      <video
+        className="w-full aspect-video rounded-lg shadow-lg"
+        src="/videos/2.mp4"
+        title="جولة سياحية في السودان"
+        muted
+        controls
+        preload="none"
+      ></video>
+    </div>
+  </div>
+</section>
       </main>
 
       <Footer />
