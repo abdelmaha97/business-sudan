@@ -132,6 +132,11 @@ export const PersonalInfoStep = ({ form, goToNextStep, onBack }: PersonalInfoSte
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isAnalyzed) {
+      toast.error("يرجى التقاط صورة وتحليل البيانات أولاً");
+      return;
+    }
+    
     form.trigger(['fullName', 'idNumber', 'birthDate']).then(isValid => {
       if (isValid) {
         goToNextStep();
@@ -146,7 +151,7 @@ export const PersonalInfoStep = ({ form, goToNextStep, onBack }: PersonalInfoSte
       <Alert variant="default" className="bg-blue-50 border-blue-200 text-blue-800 mb-6">
         <AlertCircle className="h-4 w-4" />
         <AlertDescription>
-          قم بالتقاط صورة لوثيقة الهوية الخاصة بك أو إرفاق صورة واضحة لها.
+          قم بالتقاط صورة للبطاقة الشخصية أو جواز السفر الخاصة بك أو إرفاق صورة واضحة لها.
         </AlertDescription>
       </Alert>
 
@@ -212,7 +217,7 @@ export const PersonalInfoStep = ({ form, goToNextStep, onBack }: PersonalInfoSte
                     <Check className="w-5 h-5" />
                     <h4 className="font-semibold">تم استخراج البيانات بنجاح</h4>
                   </div>
-                  <p className="text-sm">تم استخراج البيانات من صورة الهوية وتعبئتها في النموذج.</p>
+                  <p className="text-sm">تم استخراج البيانات من صورة الهوية وتعبئتها تلقائياً في النموذج.</p>
                 </div>
               ) : (
                 <Button 
@@ -246,8 +251,10 @@ export const PersonalInfoStep = ({ form, goToNextStep, onBack }: PersonalInfoSte
                     <FormControl>
                       <div className="relative">
                         <Input
-                          placeholder="الاسم الكامل"
-                          className="pr-10"
+                          placeholder="سيتم استخراجه من الصورة"
+                          className={`pr-10 ${isAnalyzed ? 'bg-gray-100' : ''}`}
+                          readOnly={isAnalyzed}
+                          disabled={!isAnalyzed}
                           {...field}
                           required
                         />
@@ -268,8 +275,10 @@ export const PersonalInfoStep = ({ form, goToNextStep, onBack }: PersonalInfoSte
                     <FormControl>
                       <div className="relative">
                         <Input
-                          placeholder="الجنسية"
-                          className="pr-10"
+                          placeholder="سيتم استخراجه من الصورة"
+                          className={`pr-10 ${isAnalyzed ? 'bg-gray-100' : ''}`}
+                          readOnly={isAnalyzed}
+                          disabled={!isAnalyzed}
                           {...field}
                         />
                         <Flag className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-400 w-5 h-5" />
@@ -289,8 +298,10 @@ export const PersonalInfoStep = ({ form, goToNextStep, onBack }: PersonalInfoSte
                     <FormControl>
                       <div className="relative">
                         <Input
-                          placeholder="رقم الهوية/الجواز"
-                          className="pr-10"
+                          placeholder="سيتم استخراجه من الصورة"
+                          className={`pr-10 ${isAnalyzed ? 'bg-gray-100' : ''}`}
+                          readOnly={isAnalyzed}
+                          disabled={!isAnalyzed}
                           {...field}
                           required
                         />
@@ -312,8 +323,10 @@ export const PersonalInfoStep = ({ form, goToNextStep, onBack }: PersonalInfoSte
                       <div className="relative">
                         <Input
                           type="date"
-                          placeholder="تاريخ الميلاد"
-                          className="pr-10"
+                          placeholder="سيتم استخراجه من الصورة"
+                          className={`pr-10 ${isAnalyzed ? 'bg-gray-100' : ''}`}
+                          readOnly={isAnalyzed}
+                          disabled={!isAnalyzed}
                           {...field}
                           required
                         />
