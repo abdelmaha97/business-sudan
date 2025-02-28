@@ -4,43 +4,20 @@ import { Form, FormControl, FormField, FormItem, FormMessage, FormLabel } from "
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { User, Mail, Phone } from 'lucide-react';
+import { Mail, Phone } from 'lucide-react';
 
-interface PersonalInfoStepProps {
+interface ContactInfoStepProps {
   form: UseFormReturn<any>;
   accountType: string;
   onComplete: () => void;
   onBack: () => void;
 }
 
-export const PersonalInfoStep = ({ form, accountType, onComplete, onBack }: PersonalInfoStepProps) => {
+export const ContactInfoStep = ({ form, accountType, onComplete, onBack }: ContactInfoStepProps) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onComplete)} className="space-y-6">
-        <h2 className="text-2xl font-bold text-center mb-6">البيانات الشخصية</h2>
-
-        {accountType === 'citizen' && (
-          <FormField
-            control={form.control}
-            name="nationalId"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>رقم الهوية</FormLabel>
-                <FormControl>
-                  <div className="relative">
-                    <Input
-                      placeholder="رقم الهوية"
-                      className="pr-10"
-                      {...field}
-                    />
-                    <User className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-400 w-5 h-5" />
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        )}
+        <h2 className="text-2xl font-bold text-center mb-6">بيانات التواصل</h2>
 
         <FormField
           control={form.control}

@@ -1,7 +1,7 @@
 
 import { ReactNode } from "react";
 
-type Step = 'accountType' | 'personalInfo' | 'identityVerification' | 'password' | 'complete';
+type Step = 'accountType' | 'contactInfo' | 'personalInfo' | 'password' | 'complete';
 
 interface RegistrationStepsProps {
   currentStep: Step;
@@ -10,8 +10,8 @@ interface RegistrationStepsProps {
 export const RegistrationSteps = ({ currentStep }: RegistrationStepsProps) => {
   const steps: Array<{ key: Step, label: string }> = [
     { key: 'accountType', label: "نوع الحساب" },
+    { key: 'contactInfo', label: "بيانات التواصل" },
     { key: 'personalInfo', label: "البيانات الشخصية" },
-    { key: 'identityVerification', label: "التحقق من الهوية" },
     { key: 'password', label: "كلمة المرور" },
     { key: 'complete', label: "انتهاء التسجيل" }
   ];

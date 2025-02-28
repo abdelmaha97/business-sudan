@@ -8,13 +8,8 @@ export const accountTypeSchema = z.object({
   }),
 });
 
-// مخطط التحقق للبيانات الشخصية
-export const personalInfoSchema = z.object({
-  fullName: z.string().optional(),
-  nationality: z.string().optional(),
-  idNumber: z.string().optional(),
-  birthDate: z.string().optional(),
-  nationalId: z.string().optional(),
+// مخطط التحقق لبيانات التواصل
+export const contactInfoSchema = z.object({
   email: z.string().email("البريد الإلكتروني غير صالح"),
   emailConfirm: z.string(),
   phone: z.string().min(10, "رقم الهاتف غير صالح"),
@@ -24,9 +19,12 @@ export const personalInfoSchema = z.object({
   path: ["emailConfirm"],
 });
 
-// مخطط التحقق للهوية
-export const identityVerificationSchema = z.object({
-  identityDocument: z.string().optional(),
+// مخطط التحقق للبيانات الشخصية
+export const personalInfoSchema = z.object({
+  fullName: z.string().min(3, "الاسم الكامل مطلوب ويجب أن يكون على الأقل 3 أحرف"),
+  nationality: z.string().optional(),
+  idNumber: z.string().min(5, "رقم الهوية/الجواز مطلوب"),
+  birthDate: z.string().min(5, "تاريخ الميلاد مطلوب"),
 });
 
 // مخطط التحقق لكلمة المرور
@@ -39,6 +37,6 @@ export const passwordSchema = z.object({
 });
 
 export type AccountTypeFormValues = z.infer<typeof accountTypeSchema>;
+export type ContactInfoFormValues = z.infer<typeof contactInfoSchema>;
 export type PersonalInfoFormValues = z.infer<typeof personalInfoSchema>;
-export type IdentityVerificationFormValues = z.infer<typeof identityVerificationSchema>;
 export type PasswordFormValues = z.infer<typeof passwordSchema>;

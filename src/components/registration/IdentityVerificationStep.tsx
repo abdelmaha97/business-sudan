@@ -3,17 +3,20 @@ import { useState, useRef } from 'react';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FileUploader } from "@/components/services/FileUploader";
-import { Camera, Upload, Check, AlertCircle } from 'lucide-react';
+import { Camera, Upload, Check, AlertCircle, Calendar, Flag, CreditCard, User } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { toast } from 'sonner';
 import { UseFormReturn } from 'react-hook-form';
+import { Input } from "@/components/ui/input";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 
-interface IdentityVerificationStepProps {
+interface PersonalInfoStepProps {
   form: UseFormReturn<any>;
   goToNextStep: () => void;
+  onBack: () => void;
 }
 
-export const IdentityVerificationStep = ({ form, goToNextStep }: IdentityVerificationStepProps) => {
+export const PersonalInfoStep = ({ form, goToNextStep, onBack }: PersonalInfoStepProps) => {
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -106,14 +109,14 @@ export const IdentityVerificationStep = ({ form, goToNextStep }: IdentityVerific
       
       // بيانات مستخرجة (هذه بيانات وهمية)
       const extractedData = {
-        name: "محمد أحمد عبدالله",
+        fullName: "محمد أحمد عبدالله",
         nationality: "سوداني",
         idNumber: "1234567890",
         birthDate: "1990-01-15"
       };
       
       // تحديث نموذج البيانات
-      form.setValue("fullName", extractedData.name);
+      form.setValue("fullName", extractedData.fullName);
       form.setValue("nationality", extractedData.nationality);
       form.setValue("idNumber", extractedData.idNumber);
       form.setValue("birthDate", extractedData.birthDate);
@@ -127,9 +130,18 @@ export const IdentityVerificationStep = ({ form, goToNextStep }: IdentityVerific
     }
   };
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    form.trigger(['fullName', 'idNumber', 'birthDate']).then(isValid => {
+      if (isValid) {
+        goToNextStep();
+      }
+    });
+  };
+
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-center mb-6">التحقق من الهوية</h2>
+      <h2 className="text-2xl font-bold text-center mb-6">البيانات الشخصية</h2>
       
       <Alert variant="default" className="bg-blue-50 border-blue-200 text-blue-800 mb-6">
         <AlertCircle className="h-4 w-4" />
@@ -219,17 +231,114 @@ export const IdentityVerificationStep = ({ form, goToNextStep }: IdentityVerific
       {/* كانفاس مخفي للتعامل مع الصورة */}
       <canvas ref={canvasRef} className="hidden" />
       
-      <div className="flex justify-between pt-6">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => form.trigger().then(isValid => {
-            if (isValid) goToNextStep();
-          })}
-        >
-          استمر
-        </Button>
-      </div>
+      <Form {...form}>
+        <form onSubmit={handleSubmit} className="space-y-6 mt-8">
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
+            <h3 className="text-lg font-semibold mb-4">البيانات المستخرجة</h3>
+            
+            <div className="space-y-4">
+              <FormField
+                control={form.control}
+                name="fullName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>الاسم الكامل<span className="text-red-500">*</span></FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Input
+                          placeholder="الاسم الكامل"
+                          className="pr-10"
+                          {...field}
+                          required
+                        />
+                        <User className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-400 w-5 h-5" />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="nationality"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>الجنسية</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Input
+                          placeholder="الجنسية"
+                          className="pr-10"
+                          {...field}
+                        />
+                        <Flag className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-400 w-5 h-5" />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="idNumber"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>رقم الهوية/الجواز<span className="text-red-500">*</span></FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Input
+                          placeholder="رقم الهوية/الجواز"
+                          className="pr-10"
+                          {...field}
+                          required
+                        />
+                        <CreditCard className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-400 w-5 h-5" />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="birthDate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>تاريخ الميلاد<span className="text-red-500">*</span></FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Input
+                          type="date"
+                          placeholder="تاريخ الميلاد"
+                          className="pr-10"
+                          {...field}
+                          required
+                        />
+                        <Calendar className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-400 w-5 h-5" />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+          
+          <div className="flex justify-between pt-6">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onBack}
+            >
+              رجوع
+            </Button>
+            <Button type="submit">استمر</Button>
+          </div>
+        </form>
+      </Form>
     </div>
   );
 };

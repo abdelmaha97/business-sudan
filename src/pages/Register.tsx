@@ -7,14 +7,14 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { toast } from "sonner";
 import { AccountTypeStep } from "@/components/registration/AccountTypeStep";
-import { PersonalInfoStep } from "@/components/registration/PersonalInfoStep";
-import { IdentityVerificationStep } from "@/components/registration/IdentityVerificationStep";
+import { ContactInfoStep } from "@/components/registration/PersonalInfoStep";  // Renamed component
+import { PersonalInfoStep } from "@/components/registration/IdentityVerificationStep";  // Renamed component
 import { PasswordStep } from "@/components/registration/PasswordStep";
 import { CompleteStep } from "@/components/registration/CompleteStep";
 import { RegistrationSteps } from "@/components/registration/RegistrationSteps";
 
 // تعريف نوع للخطوات
-type Step = 'accountType' | 'personalInfo' | 'identityVerification' | 'password' | 'complete';
+type Step = 'accountType' | 'contactInfo' | 'personalInfo' | 'password' | 'complete';
 
 // مخطط التحقق للخطوة الأولى
 const accountTypeSchema = z.object({
@@ -23,13 +23,8 @@ const accountTypeSchema = z.object({
   }),
 });
 
-// مخطط التحقق للبيانات الشخصية
-const personalInfoSchema = z.object({
-  fullName: z.string().optional(),
-  nationality: z.string().optional(),
-  idNumber: z.string().optional(),
-  birthDate: z.string().optional(),
-  nationalId: z.string().optional(),
+// مخطط التحقق لبيانات التواصل
+const contactInfoSchema = z.object({
   email: z.string().email("البريد الإلكتروني غير صالح"),
   emailConfirm: z.string(),
   phone: z.string().min(10, "رقم الهاتف غير صالح"),
@@ -39,9 +34,12 @@ const personalInfoSchema = z.object({
   path: ["emailConfirm"],
 });
 
-// مخطط التحقق للهوية
-const identityVerificationSchema = z.object({
-  identityDocument: z.string().optional(),
+// مخطط التحقق للبيانات الشخصية
+const personalInfoSchema = z.object({
+  fullName: z.string().min(3, "الاسم الكامل مطلوب ويجب أن يكون على الأقل 3 أحرف"),
+  nationality: z.string().optional(),
+  idNumber: z.string().min(5, "رقم الهوية/الجواز مطلوب"),
+  birthDate: z.string().min(5, "تاريخ الميلاد مطلوب"),
 });
 
 // مخطط التحقق لكلمة المرور
@@ -64,6 +62,17 @@ const Register = () => {
     },
   });
 
+  // نموذج بيانات التواصل
+  const contactInfoForm = useForm<z.infer<typeof contactInfoSchema>>({
+    resolver: zodResolver(contactInfoSchema),
+    defaultValues: {
+      email: "",
+      emailConfirm: "",
+      phone: "",
+      countryCode: "",
+    },
+  });
+
   // نموذج البيانات الشخصية
   const personalInfoForm = useForm<z.infer<typeof personalInfoSchema>>({
     resolver: zodResolver(personalInfoSchema),
@@ -72,19 +81,6 @@ const Register = () => {
       nationality: "",
       idNumber: "",
       birthDate: "",
-      nationalId: "",
-      email: "",
-      emailConfirm: "",
-      phone: "",
-      countryCode: "",
-    },
-  });
-
-  // نموذج التحقق من الهوية
-  const identityVerificationForm = useForm<z.infer<typeof identityVerificationSchema>>({
-    resolver: zodResolver(identityVerificationSchema),
-    defaultValues: {
-      identityDocument: "",
     },
   });
 
@@ -99,15 +95,15 @@ const Register = () => {
 
   // معالجة تقديم نوع الحساب
   const onAccountTypeSubmit = () => {
+    setCurrentStep('contactInfo');
+  };
+
+  // معالجة تقديم بيانات التواصل
+  const onContactInfoSubmit = () => {
     setCurrentStep('personalInfo');
   };
 
   // معالجة تقديم البيانات الشخصية
-  const onPersonalInfoSubmit = () => {
-    setCurrentStep('identityVerification');
-  };
-
-  // معالجة التحقق من الهوية
   const goToPasswordStep = () => {
     setCurrentStep('password');
   };
@@ -134,19 +130,20 @@ const Register = () => {
             />
           )}
 
-          {currentStep === 'personalInfo' && (
-            <PersonalInfoStep 
-              form={personalInfoForm} 
+          {currentStep === 'contactInfo' && (
+            <ContactInfoStep 
+              form={contactInfoForm} 
               accountType={accountTypeForm.getValues('accountType')}
-              onComplete={onPersonalInfoSubmit}
+              onComplete={onContactInfoSubmit}
               onBack={() => setCurrentStep('accountType')}
             />
           )}
 
-          {currentStep === 'identityVerification' && (
-            <IdentityVerificationStep 
+          {currentStep === 'personalInfo' && (
+            <PersonalInfoStep 
               form={personalInfoForm} 
               goToNextStep={goToPasswordStep}
+              onBack={() => setCurrentStep('contactInfo')}
             />
           )}
 
@@ -154,7 +151,7 @@ const Register = () => {
             <PasswordStep 
               form={passwordForm}
               onComplete={onPasswordSubmit}
-              onBack={() => setCurrentStep('identityVerification')}
+              onBack={() => setCurrentStep('personalInfo')}
             />
           )}
 
