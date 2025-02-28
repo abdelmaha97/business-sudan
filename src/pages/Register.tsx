@@ -13,9 +13,10 @@ import { User, Mail, Phone, Lock, Eye, EyeOff } from 'lucide-react';
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { IdentityVerificationStep } from "@/components/registration/IdentityVerificationStep";
 
 // تعريف نوع للخطوات
-type Step = 'accountType' | 'personalInfo' | 'password' | 'complete';
+type Step = 'accountType' | 'personalInfo' | 'identityVerification' | 'password' | 'complete';
 
 // مخطط التحقق للخطوة الأولى
 const accountTypeSchema = z.object({
@@ -26,6 +27,10 @@ const accountTypeSchema = z.object({
 
 // مخطط التحقق للبيانات الشخصية
 const personalInfoSchema = z.object({
+  fullName: z.string().optional(),
+  nationality: z.string().optional(),
+  idNumber: z.string().optional(),
+  birthDate: z.string().optional(),
   nationalId: z.string().optional(),
   email: z.string().email("البريد الإلكتروني غير صالح"),
   emailConfirm: z.string(),
@@ -34,6 +39,11 @@ const personalInfoSchema = z.object({
 }).refine((data) => data.email === data.emailConfirm, {
   message: "البريد الإلكتروني غير متطابق",
   path: ["emailConfirm"],
+});
+
+// مخطط التحقق للهوية
+const identityVerificationSchema = z.object({
+  identityDocument: z.string().optional(),
 });
 
 // مخطط التحقق لكلمة المرور
@@ -63,11 +73,23 @@ const Register = () => {
   const personalInfoForm = useForm<z.infer<typeof personalInfoSchema>>({
     resolver: zodResolver(personalInfoSchema),
     defaultValues: {
+      fullName: "",
+      nationality: "",
+      idNumber: "",
+      birthDate: "",
       nationalId: "",
       email: "",
       emailConfirm: "",
       phone: "",
       countryCode: "",
+    },
+  });
+
+  // نموذج التحقق من الهوية
+  const identityVerificationForm = useForm<z.infer<typeof identityVerificationSchema>>({
+    resolver: zodResolver(identityVerificationSchema),
+    defaultValues: {
+      identityDocument: "",
     },
   });
 
@@ -87,6 +109,11 @@ const Register = () => {
 
   // معالجة تقديم البيانات الشخصية
   const onPersonalInfoSubmit = (data: z.infer<typeof personalInfoSchema>) => {
+    setCurrentStep('identityVerification');
+  };
+
+  // معالجة التحقق من الهوية
+  const goToPasswordStep = () => {
     setCurrentStep('password');
   };
 
@@ -104,8 +131,9 @@ const Register = () => {
         {[
           { number: 1, label: "نوع الحساب", status: currentStep === 'accountType' ? 'current' : 'done' },
           { number: 2, label: "البيانات الشخصية", status: currentStep === 'personalInfo' ? 'current' : (currentStep === 'accountType' ? 'upcoming' : 'done') },
-          { number: 3, label: "كلمة المرور", status: currentStep === 'password' ? 'current' : (currentStep === 'complete' ? 'done' : 'upcoming') },
-          { number: 4, label: "انتهاء التسجيل", status: currentStep === 'complete' ? 'current' : 'upcoming' },
+          { number: 3, label: "التحقق من الهوية", status: currentStep === 'identityVerification' ? 'current' : (currentStep === 'accountType' || currentStep === 'personalInfo' ? 'upcoming' : 'done') },
+          { number: 4, label: "كلمة المرور", status: currentStep === 'password' ? 'current' : (currentStep === 'complete' ? 'done' : 'upcoming') },
+          { number: 5, label: "انتهاء التسجيل", status: currentStep === 'complete' ? 'current' : 'upcoming' },
         ].map((step, index) => (
           <div key={step.number} className="flex items-center">
             {index > 0 && (
@@ -328,6 +356,13 @@ const Register = () => {
             </Form>
           )}
 
+          {currentStep === 'identityVerification' && (
+            <IdentityVerificationStep 
+              form={personalInfoForm} 
+              goToNextStep={goToPasswordStep}
+            />
+          )}
+
           {currentStep === 'password' && (
             <Form {...passwordForm}>
               <form onSubmit={passwordForm.handleSubmit(onPasswordSubmit)} className="space-y-6">
@@ -401,7 +436,7 @@ const Register = () => {
                   <Button
                     type="button"
                     variant="outline"
-                    onClick={() => setCurrentStep('personalInfo')}
+                    onClick={() => setCurrentStep('identityVerification')}
                   >
                     رجوع
                   </Button>
